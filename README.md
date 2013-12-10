@@ -2,9 +2,13 @@ flag
 ====
 
 flag module for drupalgap. This was for my personal project, please use at your own risk!
+
 This module works with Drupal's Flag Service module. To use it:
+
 |==============| | Drupal Setup | |==============|
+
 1. Download and install Flag Service on your drupal site.
+
 2. On your drupal site, navigate to admin/structure/services/list/drupalgap/resources and enable the actions you need under flag.
 
 |=================| | DrupalGap Setup | |=================|
@@ -20,7 +24,9 @@ Modify settings.js to include the flag module:
 
 
 |=================| | Example calls | |=================|
+
 - is_flagged:
+
         var is_flagged = {
              "flag_name" : blah,
              "entity_id" : 123, 
@@ -29,26 +35,30 @@ Modify settings.js to include the flag module:
         drupalgap.services.flag.is_flagged.call({
             'data':is_flagged,
             'success':function(data) {
-                alert(JSON.stringify(data, null, 4));
+                //your success function
             },
         });
         
 - flag/unflag:
-      var flag = {
+
+        var flag = {
              "flag_name" : blah,
-             "entity_id" : 123,
-              "uid" : 1,
+             "entity_id" : 123, 
+              "uid" : 1, 
               "action" : "flag", //or unflag
-              "skip_permission_check" : true, //for debugging
+              "skip_permission_check" : true,  //or flase
         };
         drupalgap.services.flag.flag.call({
             'data':flag,
             'success':function(data) {
-                alert(JSON.stringify(data, null, 4));
+                // your success function
             },
         });
+        
 
 - countall:
+
+
         var countall = {
              "flag_name" : blah,
              "entity_id" : 123, 
@@ -56,6 +66,6 @@ Modify settings.js to include the flag module:
         drupalgap.services.flag.countall.call({
             'data':countall,
             'success':function(data) {
-                alert(JSON.stringify(data, null, 4));
+                //your success function
             },
         });
