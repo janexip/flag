@@ -18,49 +18,8 @@ Setup
 
 3. Add this module to your settings.js file in DrupalGap
 
-|=================| | Example calls | |=================|
+Display Flag Count on a Node Page
+=================================
 
-- is_flagged:
+http://pastebin.com/1r602H6A
 
-        var is_flagged = {
-             "flag_name" : blah,
-             "entity_id" : 123, 
-              "uid" : 1,  //optional
-        };
-        drupalgap.services.flag.is_flagged.call({
-            'data':is_flagged,
-            'success':function(data) {
-                //your success function
-            },
-        });
-        
-- flag/unflag:
-
-        var flag = {
-             "flag_name" : blah,
-             "entity_id" : 123, 
-              "uid" : 1, 
-              "action" : "flag", //or unflag
-              "skip_permission_check" : true,  //or flase
-        };
-        drupalgap.services.flag.flag.call({
-            'data':flag,
-            'success':function(data) {
-                // your success function
-            },
-        });
-        
-
-- countall:
-
-
-        var countall = {
-             "flag_name" : blah,
-             "entity_id" : 123, 
-        };
-        drupalgap.services.flag.countall.call({
-            'data':countall,
-            'success':function(data) {
-                //your success function
-            },
-        });
