@@ -29,7 +29,6 @@ function flag_entity_post_render_content(entity, entity_type, bundle) {
       var html = '';
       var page_id = drupalgap_get_page_id();
       $.each(flags, function(fid, flag) {
-          dpm(flag);
           var container_id = flag_container_id(flag.name, entity_id);
           html += '<div id="' + container_id + '"></div>' +
             drupalgap_jqm_page_event_script_code(
@@ -108,14 +107,18 @@ function _flag_onclick(fid, entity_id, action) {
               if (action == 'flag') {
                 action = 'unflag';
                 text = flag.options.unflag_short;
-                msg = flag.options.flag_message;
+                if (typeof flag.options.flag_message !== 'undefined' && flag.options.flag_message != '') {
+                  msg = flag.options.flag_message;  
+                }
               }
               else {
                 action = 'flag';
                 text = flag.options.flag_short;
-                msg = flag.options.unflag_message;
+                if (typeof flag.options.unflag_message !== 'undefined' && flag.options.unflag_message != '') {
+                  msg = flag.options.unflag_message;  
+                }
               }
-              drupalgap_alert(msg);
+              if (msg) { drupalgap_alert(msg); }
               var html = theme('flag', {
                   fid: fid,
                   entity_id: entity_id,
@@ -233,6 +236,12 @@ function flag_is_flagged(flag_name, entity_id, uid, options) {
 
 /**
  * Flags (or unflags) an entity.
+ * @param {String} flag_name
+ * @param {Number} entity_id
+ * @param {String} action
+ * @param {Number} uid (optional)
+ * @param {Boolean} skip_permission_check (optional)
+ * @param {Object} options
  */
 function flag_flag(flag_name, entity_id, action, uid, skip_permission_check, options) {
   try {
@@ -256,14 +265,22 @@ function flag_flag(flag_name, entity_id, action, uid, skip_permission_check, opt
 }
 
 /**
- *
+ * Count the flags number on a specific node.
+ * @param {String} flag_name
+ * @param {Number} entity_id
+ * @param {Object} options
  */
-function flag_countall(options) {
+function flag_countall(flag_name, entity_id, options) {
   try {
     options.method = 'POST';
     options.path = 'flag/countall.json';
     options.service = 'flag';
     options.resource = 'countall';
+    var data = {
+      flag_name: flag_name,
+      entity_id: entity_id
+    };
+    options.data = JSON.stringify(data);
     Drupal.services.call(options);
   }
   catch (error) { console.log('flag_countall - ' + error); }
