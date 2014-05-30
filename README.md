@@ -1,27 +1,22 @@
 flag
 ====
 
-flag module for drupalgap. This was for my personal project, please use at your own risk!
+The Flag module for DrupalGap.
 
-This module works with Drupal's Flag Service module. To use it:
-
-|==============| | Drupal Setup | |==============|
+Setup
+=====
 
 1. Download and install Flag Service on your drupal site.
 
-2. On your drupal site, navigate to admin/structure/services/list/drupalgap/resources and enable the actions you need under flag.
+  https://drupal.org/project/flag_service
 
-|=================| | DrupalGap Setup | |=================|
+2. On your drupal site, navigate to:
 
-Download the DrupalGap flag module:
-https://github.com/dontmcyn/flag
+  admin/structure/services/list/drupalgap/resources 
+  
+   Then enable the 3 resources under the 'flag' service.
 
-Extract the module into the www/app/modules folder, so it lives here:
-www/app/modules/flag
-
-Modify settings.js to include the flag module:
-/* Contrib Modules / drupalgap.modules.contrib = { / ... / {"name":"flag"}, / ... */ };
-
+3. Add this module to your settings.js file in DrupalGap
 
 |=================| | Example calls | |=================|
 
