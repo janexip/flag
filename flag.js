@@ -38,7 +38,9 @@ function flag_entity_post_render_content(entity, entity_type, bundle) {
                 jqm_page_event_callback: '_flag_pageshow',
                 jqm_page_event_args: JSON.stringify({
                     fid: fid,
-                    entity_id: entity_id
+                    entity_id: entity_id,
+                    entity_type: entity_type,
+                    bundle: bundle
                 })
               },
               flag.fid
@@ -77,7 +79,9 @@ function _flag_pageshow(options) {
                 fid: flag.fid,
                 entity_id: options.entity_id,
                 action: action,
-                text: text
+                text: text,
+                entity_type: options.entity_type,
+                bundle: options.bundle
             });
             var container_id = flag_container_id(flag.name, options.entity_id);
             $('#' + container_id).html(html).trigger('create');
@@ -92,11 +96,13 @@ function _flag_pageshow(options) {
 /**
  *
  */
-function _flag_onclick(fid, entity_id, action) {
+function _flag_onclick(fid, entity_type, bundle, entity_id, action) {
   try {
     var flag = flag_load(fid);
     if (!flag) { return; }
     flag_flag(flag.name, entity_id, action, Drupal.user.uid, false, {
+        entity_type: entity_type,
+        bundle: bundle,
         success: function(result) {
           try {
             if (result[0]) {
@@ -195,7 +201,8 @@ function flag_load(fid) {
 function theme_flag(variables) {
   try {
     var attributes = {
-      onclick: "_flag_onclick(" + variables.fid + ", " + variables.entity_id + ", '" + variables.action + "')"
+      onclick: "_flag_onclick(" + variables.fid + ", '" + variables.entity_type + "', '" + variables.bundle + "', " +
+        variables.entity_id + ", '" + variables.action + "')"
     };
     return theme('button_link', {
         path: null,
