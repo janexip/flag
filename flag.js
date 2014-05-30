@@ -64,7 +64,6 @@ function _flag_pageshow(options) {
           try {
             var html = '';
             var flagged = result[0];
-            var path = null;
             var text = null;
             var action = null;
             if (flagged) {
@@ -75,13 +74,11 @@ function _flag_pageshow(options) {
               text = flag.options.flag_short;
               action = 'flag';
             }
-            var attributes = {
-              onclick: "_flag_onclick(" + flag.fid + ", " + options.entity_id + ", '" + action + "')"
-            };
-            html += theme('button_link', {
-                path: path,
-                text: text,
-                attributes: attributes
+            html += theme('flag', {
+                fid: flag.fid,
+                entity_id: options.entity_id,
+                action: action,
+                text: text
             });
             var container_id = flag_container_id(flag.name, options.entity_id);
             $('#' + container_id).html(html).trigger('create');
@@ -104,10 +101,29 @@ function _flag_onclick(fid, entity_id, action) {
         success: function(result) {
           try {
             if (result[0]) {
+              // Redraw the flag to be opposite of what just happened, and show
+              // an alert of what just happened.
               var msg = null;
-              if (action == 'flag') { msg = flag.options.flag_message; }
-              else { msg = flag.options.unflag_message; }
+              var text = null;
+              if (action == 'flag') {
+                action = 'unflag';
+                text = flag.options.unflag_short;
+                msg = flag.options.flag_message;
+              }
+              else {
+                action = 'flag';
+                text = flag.options.flag_short;
+                msg = flag.options.unflag_message;
+              }
               drupalgap_alert(msg);
+              var html = theme('flag', {
+                  fid: fid,
+                  entity_id: entity_id,
+                  action: action,
+                  text: text
+              });
+              var container_id = flag_container_id(flag.name, entity_id);
+              $('#' + container_id).html(html).trigger('create');
             }
           }
           catch (error) { console.log('_flag_onclick - success - ' + error); }
@@ -164,6 +180,27 @@ function flag_load(fid) {
     return flag;
   }
   catch (error) { console.log('flag_load - ' + error); }
+}
+
+/********|
+ * Theme |
+ ********/
+
+/**
+ * Theme's a flag.
+ */
+function theme_flag(variables) {
+  try {
+    var attributes = {
+      onclick: "_flag_onclick(" + variables.fid + ", " + variables.entity_id + ", '" + variables.action + "')"
+    };
+    return theme('button_link', {
+        path: null,
+        text: variables.text,
+        attributes: attributes
+    });
+  }
+  catch (error) { console.log('theme_flag - ' + error); }
 }
 
 /***********|
