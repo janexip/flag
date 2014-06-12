@@ -129,7 +129,9 @@ function _flag_onclick(fid, entity_type, bundle, entity_id, action) {
                   fid: fid,
                   entity_id: entity_id,
                   action: action,
-                  text: text
+                  text: text,
+                  entity_type: entity_type,
+                  bundle: bundle
               });
               var container_id = flag_container_id(flag.name, entity_id);
               $('#' + container_id).html(html).trigger('create');
