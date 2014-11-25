@@ -29,6 +29,12 @@ function flag_entity_post_render_content(entity, entity_type, bundle) {
       var html = '';
       var page_id = drupalgap_get_page_id();
       $.each(flags, function(fid, flag) {
+          // If this flag isn't visible on the DrupalGap display (manage
+          // display), then skip it. Note, this doesn't work. I can't find where
+          // flag stores it display mode settings.
+          //if (!flag.options.show_in_links['drupalgap']) { return; }
+          // Build an empty container for the flag, and add javascript to inject
+          // the widget into the page.
           var container_id = flag_container_id(flag.name, entity_id);
           html += '<div id="' + container_id + '"></div>' +
             drupalgap_jqm_page_event_script_code(
